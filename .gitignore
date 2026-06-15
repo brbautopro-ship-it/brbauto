@@ -6,3 +6,4 @@ node_modules
 *.log
 .vite
 .claude/settings.local.json
+.claude/launch.json
