@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "preview"],
       "port": 4173
+    },
+    {
+      "name": "zip5-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5610", "--directory", "C:/Users/mathi/Downloads/brbautopro/dist"],
+      "port": 5610
     }
   ]
 }
