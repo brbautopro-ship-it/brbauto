@@ -1,5 +1,7 @@
+# Déploiement de fichiers statiques pré-construits (dossier dist/ versionné).
+# Le build Vite est désactivé : Netlify publie directement le contenu de dist/.
 [build]
-  command = "npm run build"
+  command = "echo 'Pas de build — publication directe de dist/'"
   publish = "dist"
 
 [[redirects]]
