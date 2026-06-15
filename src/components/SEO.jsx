@@ -22,7 +22,9 @@ function upsertLink(rel, href) {
   el.setAttribute('href', href)
 }
 
-export default function SEO({ title, description, path = '/' }) {
+const DEFAULT_IMAGE = `${SITE_URL}/logo.jpg`
+
+export default function SEO({ title, description, path = '/', image = DEFAULT_IMAGE }) {
   useEffect(() => {
     const url = `${SITE_URL}${path}`
     if (title) document.title = title
@@ -31,8 +33,13 @@ export default function SEO({ title, description, path = '/' }) {
     if (description) upsertMeta('property', 'og:description', description)
     upsertMeta('property', 'og:url', url)
     upsertMeta('property', 'og:type', 'website')
+    upsertMeta('property', 'og:image', image)
+    upsertMeta('name', 'twitter:card', 'summary_large_image')
+    if (title) upsertMeta('name', 'twitter:title', title)
+    if (description) upsertMeta('name', 'twitter:description', description)
+    upsertMeta('name', 'twitter:image', image)
     upsertLink('canonical', url)
-  }, [title, description, path])
+  }, [title, description, path, image])
 
   return null
 }

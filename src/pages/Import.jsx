@@ -26,6 +26,9 @@ export default function ImportPage() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', brand: '', model: '', budget: '', message: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [guideEmail, setGuideEmail] = useState('')
+  const [guideSent, setGuideSent] = useState(false)
+  const [guideLoading, setGuideLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,6 +40,20 @@ export default function ImportPage() {
       console.error(err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGuide = async (e) => {
+    e.preventDefault()
+    if (!guideEmail) return
+    setGuideLoading(true)
+    try {
+      await addDoc(collection(db, 'guideRequests'), { email: guideEmail, createdAt: serverTimestamp() })
+      setGuideSent(true)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setGuideLoading(false)
     }
   }
 
@@ -194,12 +211,25 @@ export default function ImportPage() {
               <p className="text-white/70 text-sm font-body">Les 6 points de contrôle essentiels avant d'importer une voiture d'Allemagne</p>
             </div>
           </div>
-          <form className="flex gap-3 w-full md:w-auto" onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Votre email" className="input-dark flex-1 md:w-64" />
-            <button type="submit" className="bg-white text-primary hover:bg-white/90 px-6 py-3 font-heading font-bold uppercase tracking-widest text-xs transition-colors whitespace-nowrap">
-              Recevoir le PDF
-            </button>
-          </form>
+          {guideSent ? (
+            <div className="flex items-center gap-3 bg-white/15 px-6 py-3 text-white font-heading font-bold uppercase tracking-widest text-xs">
+              <CheckCircle className="w-5 h-5 flex-shrink-0" /> Merci ! Nous vous envoyons le guide par email.
+            </div>
+          ) : (
+            <form className="flex gap-3 w-full md:w-auto" onSubmit={handleGuide}>
+              <input
+                type="email"
+                required
+                value={guideEmail}
+                onChange={e => setGuideEmail(e.target.value)}
+                placeholder="Votre email"
+                className="input-dark flex-1 md:w-64"
+              />
+              <button type="submit" disabled={guideLoading} className="bg-white text-primary hover:bg-white/90 px-6 py-3 font-heading font-bold uppercase tracking-widest text-xs transition-colors whitespace-nowrap disabled:opacity-60">
+                {guideLoading ? 'Envoi…' : 'Recevoir le PDF'}
+              </button>
+            </form>
+          )}
         </div>
       </section>
     </main>

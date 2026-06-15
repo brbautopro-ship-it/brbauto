@@ -1,0 +1,16 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Collections alimentées par les formulaires publics du site.
+    // - Un visiteur peut UNIQUEMENT créer un document (envoyer sa demande).
+    // - Seul l'admin (connecté avec l'email autorisé) peut lire / modifier / supprimer.
+    //   => empêche n'importe qui de lire la liste des clients via l'API Firebase.
+    match /{collection}/{docId} {
+      allow create: if collection in ['bookings', 'contactRequests', 'importRequests', 'guideRequests'];
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'brbautopro@gmail.com';
+    }
+  }
+}
