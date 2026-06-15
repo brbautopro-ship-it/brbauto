@@ -9,7 +9,7 @@ const services = [
     icon: Shield,
     title: 'Import Europe',
     sub: 'Allemagne & +',
-    desc: 'Votre véhicule de rêve venu d\'Europe, sécurisé, garanti et livré clés en main à Nîmes.',
+    desc: 'Votre véhicule de rêve venu d\'Europe, sécurisé, garanti et livré clés en main à Beaucaire.',
     link: '/import',
     img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800',
   },
