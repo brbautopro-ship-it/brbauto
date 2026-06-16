@@ -695,12 +695,12 @@
           <li><a href="#detailing">Detailing</a></li>
           <li><a href="#apropos">À propos</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="tel:+33000000000" class="mobile-call">📞 Nous appeler</a></li>
+          <li><a href="tel:+33781787360" class="mobile-call">📞 Nous appeler</a></li>
         </ul>
       </nav>
 
       <div class="nav-right">
-        <a href="tel:+33000000000" class="btn-call">📞 Nous appeler</a>
+        <a href="tel:+33781787360" class="btn-call">📞 Nous appeler</a>
         <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -849,9 +849,9 @@
                 <option>Autre / Devis personnalisé</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Envoyer ma demande</button>
-            <p class="form-note">Réponse sous 24h ouvrées — sans engagement.</p>
-            <div class="form-success" id="formSuccess">✅ Merci ! Votre demande a bien été prise en compte. Nous vous recontactons très vite.</div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Envoyer via WhatsApp</button>
+            <p class="form-note">Votre messagerie WhatsApp s'ouvre avec la demande pré-remplie — réponse rapide, sans engagement.</p>
+            <div class="form-success" id="formSuccess">✅ WhatsApp va s'ouvrir avec votre demande pré-remplie. Il ne reste qu'à appuyer sur « Envoyer » !</div>
           </form>
         </div>
       </div>
@@ -930,7 +930,7 @@
             </div>
             <div class="txt">
               <strong>Téléphone</strong>
-              <a href="tel:+33000000000">📞 À compléter</a>
+              <a href="tel:+33781787360">07 81 78 73 60</a>
             </div>
           </div>
 
@@ -956,11 +956,11 @@
 
           <strong style="font-family:var(--font-head);letter-spacing:1px;text-transform:uppercase;font-size:.9rem;color:var(--text-mut);display:block;margin:8px 0 4px;">Suivez-nous</strong>
           <div class="socials">
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+            <a href="https://www.instagram.com/brbautopro" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://wa.me/33781787360" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-2.9.9.9-2.8-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1s-.7.8-.8 1c-.2.2-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.3-1.7c-.1-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5s0-.4-.1-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.5-.3z"/></svg>
             </a>
           </div>
         </div>
@@ -1072,12 +1072,22 @@
       requestAnimationFrame(step);
     }
 
-    /* ===== Formulaire de réservation (démo front, sans backend) ===== */
+    /* ===== Formulaire de réservation → ouverture WhatsApp pré-rempli ===== */
+    const WHATSAPP_NUMBER = '33781787360';
     const form = document.getElementById('bookingForm');
     const success = document.getElementById('formSuccess');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      const prenom  = document.getElementById('firstname').value.trim();
+      const tel     = document.getElementById('phone').value.trim();
+      const presta  = document.getElementById('service').value;
+      const msg =
+        'Bonjour BRB AutoPro, je souhaite réserver une prestation Detailing.\n\n' +
+        'Prénom : ' + prenom + '\n' +
+        'Téléphone : ' + tel + '\n' +
+        'Prestation : ' + presta;
+      window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
       success.style.display = 'block';
       form.reset();
       setTimeout(() => { success.style.display = 'none'; }, 6000);
