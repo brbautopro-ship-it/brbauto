@@ -634,6 +634,31 @@
       * { animation: none !important; }
     }
 
+    /* ============ NAV ACTIF + BOUTONS FLOTTANTS ============ */
+    .nav-links a.active { color: #fff; }
+    .nav-links a.active::after { width: 100%; }
+
+    .float-btns {
+      position: fixed;
+      right: 20px; bottom: 20px;
+      z-index: 900;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .float-btn {
+      width: 54px; height: 54px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      border: 0; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,.45);
+      transition: transform .25s ease, opacity .3s ease, visibility .3s ease;
+    }
+    .float-btn svg { width: 27px; height: 27px; }
+    .float-btn.wa { background: #25D366; color: #fff; }
+    .float-btn.wa:hover { transform: scale(1.1); }
+    .float-btn.top { background: var(--grad); color: #fff; opacity: 0; visibility: hidden; }
+    .float-btn.top.show { opacity: 1; visibility: visible; }
+    .float-btn.top:hover { transform: translateY(-3px); }
+
     /* ============ RESPONSIVE ============ */
     @media (max-width: 900px) {
       .detailing-grid, .contact-grid { grid-template-columns: 1fr; }
@@ -677,6 +702,54 @@
       .btn { justify-content: center; }
     }
   </style>
+
+  <!-- SEO complémentaire -->
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="BRB AutoPro" />
+  <meta name="geo.region" content="FR-30" />
+  <meta name="geo.placename" content="Beaucaire" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="BRB AutoPro" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BRB AutoPro — L'excellence automobile à Beaucaire" />
+  <meta name="twitter:description" content="Achat · Vente · Detailing Premium à Beaucaire (30300)." />
+  <meta name="twitter:image" content="https://brbautopro.fr/logo-brb.png" />
+
+  <!-- Données structurées : AutoDealer (SEO local) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoDealer",
+    "name": "BRB AutoPro",
+    "image": "https://brbautopro.fr/logo-brb.png",
+    "url": "https://brbautopro.fr/",
+    "telephone": "+33781787360",
+    "email": "brbautopro@gmail.com",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "6 Chemin des Moulins",
+      "postalCode": "30300",
+      "addressLocality": "Beaucaire",
+      "addressRegion": "Occitanie",
+      "addressCountry": "FR"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 43.8074, "longitude": 4.6431 },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "09:00",
+      "closes": "19:00"
+    }],
+    "sameAs": ["https://www.instagram.com/brbautopro"],
+    "areaServed": "Beaucaire, Gard (30), Occitanie",
+    "makesOffer": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Achat de véhicules" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Vente de véhicules" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Detailing automobile premium" } }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -986,12 +1059,22 @@
       </div>
       <p class="copyright">© 2025 BRB AutoPro — Tous droits réservés.</p>
       <div class="legal">
-        <a href="#">Mentions légales</a>
-        <a href="#">CGV</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
         <a href="#contact">Contact</a>
       </div>
     </div>
   </footer>
+
+  <!-- ============ BOUTONS FLOTTANTS ============ -->
+  <div class="float-btns">
+    <button class="float-btn top" id="backToTop" aria-label="Remonter en haut">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+    <a class="float-btn wa" href="https://wa.me/33781787360" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-2.9.9.9-2.8-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1s-.7.8-.8 1c-.2.2-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.3-1.7c-.1-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5s0-.4-.1-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.5-.3z"/></svg>
+    </a>
+  </div>
 
   <script>
     /* ===== Navbar : opacité au scroll ===== */
@@ -1011,6 +1094,28 @@
     };
     hamburger.addEventListener('click', () => toggleMenu());
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+    /* ===== Bouton retour en haut ===== */
+    const backToTop = document.getElementById('backToTop');
+    const toggleTop = () => backToTop.classList.toggle('show', window.scrollY > 600);
+    window.addEventListener('scroll', toggleTop, { passive: true });
+    toggleTop();
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    /* ===== Scrollspy : surbrillance du lien de nav actif ===== */
+    const navAnchors = [...navLinks.querySelectorAll('a[href^="#"]')];
+    const sectionMap = navAnchors
+      .map(a => ({ a, sec: document.querySelector(a.getAttribute('href')) }))
+      .filter(x => x.sec);
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        navAnchors.forEach(a => a.classList.remove('active'));
+        const match = sectionMap.find(x => x.sec === e.target);
+        if (match) match.a.classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sectionMap.forEach(x => spy.observe(x.sec));
 
     /* ===== Données véhicules ===== */
     const vehicles = [
