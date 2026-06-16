@@ -1,56 +1,36 @@
-# BRB Auto Pro
+# BRB AutoPro
 
-Site vitrine du concessionnaire et centre detailing **BRB Auto Pro** — Beaucaire (30300), Gard.
-Import de véhicules d'Allemagne, studio detailing (polissage, céramique 9H) et achat-vente.
+Site vitrine du garage **BRB AutoPro** — 6 Chemin des Moulins, 30300 Beaucaire (Gard).
+Achat / vente de véhicules et detailing automobile premium (polish, céramique, correction de peinture).
 
 ## Stack
 
-- **React 18** + **React Router 6**
-- **Vite 5** (build & dev server)
-- **Tailwind CSS 3**
-- **Firebase** (Auth + Firestore) pour les formulaires et l'espace admin
-- **lucide-react** (icônes)
+Site **statique, une seule page**, sans build ni dépendance :
 
-## Démarrage
+- **HTML / CSS / JavaScript** purs (tout est dans `dist/index.html`)
+- Polices **Rajdhani** (titres) + **Inter** (corps) via Google Fonts
+- Aucun framework, aucun bundler, aucun `node_modules`
 
-```bash
-npm install          # installer les dépendances
-cp .env.example .env # créer le fichier d'environnement, puis renseigner les clés Firebase
-npm run dev          # serveur de dev → http://localhost:5173
-```
+## Modifier le site
 
-## Scripts
+Tout le contenu (sections, véhicules, prix, textes, couleurs) est dans **`dist/index.html`**.
+Ouvre simplement ce fichier dans un navigateur pour le prévisualiser localement.
 
-| Commande          | Description                                 |
-|-------------------|---------------------------------------------|
-| `npm run dev`     | Serveur de développement (hot reload)       |
-| `npm run build`   | Build de production dans `dist/`            |
-| `npm run preview` | Prévisualise le build de production         |
-
-## Variables d'environnement
-
-Définies dans `.env` (non versionné). Voir `.env.example` :
-
-```
-VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=
-VITE_FIREBASE_PROJECT_ID=
-VITE_FIREBASE_STORAGE_BUCKET=
-VITE_FIREBASE_MESSAGING_SENDER_ID=
-VITE_FIREBASE_APP_ID=
-```
+La galerie de véhicules est générée par le tableau `vehicles` en bas du fichier (dans la balise `<script>`).
 
 ## Déploiement
 
-Configuré pour **Netlify** (voir `netlify.toml`). Le build génère `dist/`.
+Hébergé sur **Netlify** (voir `netlify.toml`) : publication directe du dossier `dist/`,
+sans étape de build. Pousser sur `main` met le site à jour sur https://brbautopro.fr.
 
 ## Structure
 
 ```
-src/
-  components/   # Navbar, Footer, SEO
-  lib/          # firebase.js, useScrollReveal.js
-  pages/        # Home, Import, Detailing, BuySell, Booking, Contact, Admin, NotFound
-  App.jsx       # routes + code splitting (React.lazy)
-public/         # favicon.svg, robots.txt, sitemap.xml, logo.jpg
+dist/
+  index.html     # le site complet (HTML + CSS + JS inline)
+  logo-brb.png   # logo affiché dans le header et le footer
+  robots.txt
+  sitemap.xml
+  .htaccess      # fallback Apache (ignoré par Netlify)
+netlify.toml     # configuration de déploiement
 ```
