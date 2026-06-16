@@ -422,6 +422,18 @@
       box-shadow: 0 4px 14px rgba(0,0,0,.4);
     }
     .vehicle.sold .photo { filter: grayscale(.6) brightness(.7); }
+    .vehicle .photo img { width: 100%; height: 100%; object-fit: cover; }
+    .vehicle .photo .ph-fallback { width: 100%; height: 100%; align-items: center; justify-content: center; }
+
+    .veh-filter { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+    .veh-tab {
+      font-family: var(--font-head); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      font-size: 1rem; color: var(--text-mut); background: var(--bg-alt);
+      border: 1px solid rgba(255,255,255,.12); border-radius: 8px; padding: 10px 24px; cursor: pointer;
+      transition: color .25s ease, background .25s ease, border-color .25s ease;
+    }
+    .veh-tab:hover { color: #fff; border-color: var(--accent); }
+    .veh-tab.active { background: var(--grad); color: #fff; border-color: transparent; }
 
     /* ============ DETAILING ============ */
     .detailing-grid {
@@ -845,7 +857,13 @@
   <section id="vehicules">
     <div class="container">
       <h2 class="section-title reveal">Nos <span>Véhicules</span></h2>
-      <p class="section-sub reveal">Une sélection rigoureuse de véhicules d'occasion contrôlés et garantis. Nouveaux arrivages chaque semaine.</p>
+      <p class="section-sub reveal">Motos et voitures contrôlées, prêtes à rouler. Nouveaux arrivages régulièrement.</p>
+
+      <div class="veh-filter reveal" id="vehFilter">
+        <button class="veh-tab active" data-filter="all">Tous</button>
+        <button class="veh-tab" data-filter="moto">Motos</button>
+        <button class="veh-tab" data-filter="voiture">Voitures</button>
+      </div>
 
       <div class="vehicles" id="vehicleGrid"></div>
     </div>
@@ -1117,36 +1135,58 @@
     }, { rootMargin: '-45% 0px -50% 0px' });
     sectionMap.forEach(x => spy.observe(x.sec));
 
-    /* ===== Données véhicules ===== */
+    /* ===== Données véhicules (motos + voitures) ===== */
     const vehicles = [
-      { name: 'Audi A3',          year: 2019, km: '78 000 km',  price: '21 900' },
-      { name: 'BMW Série 1',      year: 2020, km: '52 000 km',  price: '24 500', sold: true },
-      { name: 'Peugeot 308',      year: 2018, km: '96 000 km',  price: '14 900' },
-      { name: 'Renault Clio',     year: 2021, km: '34 000 km',  price: '15 400' },
-      { name: 'Mercedes CLA',     year: 2019, km: '69 000 km',  price: '27 900', sold: true },
-      { name: 'Volkswagen Golf',  year: 2020, km: '61 000 km',  price: '19 800' },
+      { type: 'moto',    name: 'Dirt Extreme 125', cc: '125 cm³', price: 'Nous consulter', img: 'vehicules/dirt-extreme-125-1.jpg' },
+      { type: 'voiture', name: 'Audi A3',          year: 2019, km: '78 000 km', price: '21 900 €' },
+      { type: 'voiture', name: 'BMW Série 1',      year: 2020, km: '52 000 km', price: '24 500 €', sold: true },
+      { type: 'voiture', name: 'Peugeot 308',      year: 2018, km: '96 000 km', price: '14 900 €' },
+      { type: 'voiture', name: 'Renault Clio',     year: 2021, km: '34 000 km', price: '15 400 €' },
+      { type: 'voiture', name: 'Mercedes CLA',     year: 2019, km: '69 000 km', price: '27 900 €', sold: true },
+      { type: 'voiture', name: 'Volkswagen Golf',  year: 2020, km: '61 000 km', price: '19 800 €' },
     ];
 
-    const carSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11"/><path d="M3 11h18v5a1 1 0 01-1 1h-1a2 2 0 01-4 0H9a2 2 0 01-4 0H4a1 1 0 01-1-1v-5z"/><circle cx="7.5" cy="15" r="1"/><circle cx="16.5" cy="15" r="1"/></svg>`;
+    const carSVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11"/><path d="M3 11h18v5a1 1 0 01-1 1h-1a2 2 0 01-4 0H9a2 2 0 01-4 0H4a1 1 0 01-1-1v-5z"/><circle cx="7.5" cy="15" r="1"/><circle cx="16.5" cy="15" r="1"/></svg>`;
+    const motoSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="17" r="3"/><circle cx="19" cy="17" r="3"/><path d="M5 17l3-6h6l3 3M8 11l-1-3H5M14 11l2-3h3M9 8h5"/></svg>`;
 
     const grid = document.getElementById('vehicleGrid');
-    grid.innerHTML = vehicles.map(v => `
-      <article class="vehicle reveal${v.sold ? ' sold' : ''}">
+
+    function vehicleCard(v) {
+      const icon  = v.type === 'moto' ? motoSVG : carSVG;
+      const specs = v.type === 'moto'
+        ? `${v.year ? `<span>📅 ${v.year}</span>` : ''}<span>🏍️ ${v.cc}</span>`
+        : `<span>📅 ${v.year}</span><span>🛣️ ${v.km}</span>`;
+      const photo = v.img
+        ? `<img src="${v.img}" alt="${v.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="ph-fallback" style="display:none">${icon}</span>`
+        : `<span class="ph-fallback" style="display:flex">${icon}</span>`;
+      return `
+      <article class="vehicle${v.sold ? ' sold' : ''}">
         ${v.sold ? '<span class="badge-sold">Vendu</span>' : ''}
-        <div class="photo">${carSVG}</div>
+        <div class="photo">${photo}</div>
         <div class="body">
           <h3>${v.name}</h3>
-          <div class="specs">
-            <span>📅 ${v.year}</span>
-            <span>🛣️ ${v.km}</span>
-          </div>
+          <div class="specs">${specs}</div>
           <div class="footer">
-            <span class="price">${v.price} €</span>
+            <span class="price">${v.price}</span>
             <a href="#contact" class="btn-detail">${v.sold ? 'Nous contacter' : 'Voir le détail'}</a>
           </div>
         </div>
-      </article>
-    `).join('');
+      </article>`;
+    }
+
+    function renderVehicles(filter) {
+      const list = (filter && filter !== 'all') ? vehicles.filter(v => v.type === filter) : vehicles;
+      grid.innerHTML = list.map(vehicleCard).join('');
+    }
+    renderVehicles('all');
+
+    document.querySelectorAll('.veh-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.veh-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderVehicles(tab.dataset.filter);
+      });
+    });
 
     /* ===== Scroll reveal + compteurs (IntersectionObserver) ===== */
     const io = new IntersectionObserver((entries) => {
