@@ -520,49 +520,116 @@
     .formules-title span { color: var(--accent); }
     .formules {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
-      margin-top: 36px;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 26px;
+      margin-top: 48px;
+      align-items: stretch;
     }
     .formule-card {
-      background: #111;
-      border: 1.5px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 32px 28px;
+      position: relative;
+      background: linear-gradient(165deg, #141414 0%, #0b0b0b 100%);
+      border: 1.5px solid rgba(255,255,255,.09);
+      border-radius: 18px;
+      padding: 36px 26px 30px;
       display: flex;
       flex-direction: column;
-      transition: transform .3s ease, box-shadow .3s ease;
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+    .formule-card::before {
+      content: "";
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: linear-gradient(160deg, rgba(212,20,90,.55), transparent 60%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none; opacity: 0; transition: opacity .35s ease;
     }
     .formule-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 16px 40px rgba(212,20,90,.3);
+      transform: translateY(-10px);
+      border-color: rgba(212,20,90,.55);
+      box-shadow: 0 24px 50px rgba(212,20,90,.22);
     }
-    .formule-badge {
-      align-self: flex-start;
-      background: rgba(212,20,90,.15);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      font-family: var(--font-head);
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: .78rem;
-      padding: 5px 12px;
-      border-radius: 6px;
+    .formule-card:hover::before { opacity: 1; }
+
+    .formule-icon {
+      width: 54px; height: 54px;
+      display: grid; place-items: center;
+      border-radius: 14px;
+      background: rgba(212,20,90,.12);
+      border: 1px solid rgba(212,20,90,.35);
       margin-bottom: 18px;
     }
-    .formule-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
-    .formule-card p { color: var(--text-mut); margin-bottom: 16px; flex-grow: 1; }
+    .formule-icon svg { width: 28px; height: 28px; color: var(--accent); }
+    .formule-card h3 {
+      font-size: 1.55rem; letter-spacing: .5px;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .formule-card .f-sub { color: var(--text-mut); font-size: .85rem; margin-bottom: 18px; }
     .formule-prix {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 1.4rem;
-      color: var(--accent);
-      min-height: 1.2rem;
-      margin-bottom: 18px;
+      font-size: 3rem; line-height: 1;
+      color: #fff;
+      margin-bottom: 6px;
     }
-    .formule-prix:empty { margin-bottom: 0; }
-    .formule-card .btn { width: 100%; justify-content: center; font-size: .92rem; padding: 12px 16px; }
+    .formule-prix .cur { color: var(--accent); font-size: 1.6rem; vertical-align: super; margin-left: 2px; }
+    .formule-prix .per { display:block; font-size: .8rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mut); margin-top: 8px; }
+    .formule-sep { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: 22px 0; }
+    .f-feats { list-style: none; margin: 0 0 26px; padding: 0; display: flex; flex-direction: column; gap: 11px; flex-grow: 1; }
+    .f-feats li { display: flex; align-items: flex-start; gap: 10px; font-size: .92rem; color: var(--text-mut); line-height: 1.35; }
+    .f-feats li svg { width: 17px; height: 17px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .f-feats li.f-incl { color: var(--text); font-weight: 600; }
+    .formule-card .btn { width: 100%; justify-content: center; font-size: .92rem; padding: 13px 16px; margin-top: auto; }
+
+    /* --- Carte mise en avant : Premium --- */
+    .formule-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(165deg, #1c0a13 0%, #0c0607 100%);
+      box-shadow: 0 20px 55px rgba(212,20,90,.30);
+      transform: scale(1.04);
+      z-index: 2;
+    }
+    .formule-card.featured::before { opacity: 1; }
+    .formule-card.featured:hover { transform: scale(1.04) translateY(-10px); }
+    .formule-card.featured .formule-prix { color: #fff; }
+    .formule-ribbon {
+      position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-family: var(--font-head); font-weight: 700;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      font-size: .78rem; white-space: nowrap;
+      padding: 8px 20px; border-radius: 30px;
+      box-shadow: 0 8px 22px rgba(212,20,90,.5);
+    }
+
+    /* --- Options --- */
+    .options-wrap { margin-top: 64px; }
+    .options-title { text-align: center; font-family: var(--font-head); font-weight: 700; font-size: clamp(1.3rem, 3vw, 1.8rem); margin-bottom: 6px; }
+    .options-title span { color: var(--accent); }
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 14px; margin-top: 30px;
+      max-width: 940px; margin-left: auto; margin-right: auto;
+    }
+    .option-item {
+      display: flex; align-items: center; gap: 12px;
+      background: #111;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 15px 17px;
+      transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+    }
+    .option-item:hover { border-color: rgba(212,20,90,.55); transform: translateY(-4px); box-shadow: 0 12px 26px rgba(212,20,90,.16); }
+    .option-item svg { width: 21px; height: 21px; color: var(--accent); flex-shrink: 0; }
+    .option-item .o-name { flex: 1; font-size: .94rem; color: var(--text); }
+    .option-item .o-price { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: var(--accent); white-space: nowrap; }
+
+    @media (max-width: 600px) {
+      .formule-card.featured, .formule-card.featured:hover { transform: none; }
+      .formule-card.featured:hover { transform: translateY(-10px); }
+    }
 
     /* ============ POURQUOI NOUS ============ */
     .stats {
@@ -999,31 +1066,124 @@
       </div>
 
       <h3 class="formules-title reveal">Nos <span>formules</span></h3>
-      <p class="section-sub reveal" style="margin-bottom:0;">Réservez en ligne — les tarifs vous sont communiqués sur demande.</p>
+      <p class="section-sub reveal">Quatre niveaux de prestation pour sublimer votre véhicule — réservez la formule qui vous correspond en quelques clics.</p>
       <div class="formules">
+
+        <!-- ESSENTIELLE -->
         <article class="formule-card reveal">
-          <span class="formule-badge">Prix sur demande</span>
-          <h3>Nettoyage intérieur complet</h3>
-          <p>Aspiration complète, nettoyage des plastiques, sièges, moquettes et vitres intérieures pour un habitacle comme neuf.</p>
-          <p class="formule-prix"><!-- PRIX À AJOUTER --></p>
-          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Nettoyage+int%C3%A9rieur+complet" target="_blank" rel="noopener" class="btn btn-primary">Réserver — Nettoyage intérieur complet</a>
+          <div class="formule-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 14.5a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/></svg>
+          </div>
+          <h3>Essentielle</h3>
+          <p class="f-sub">L'entretien indispensable</p>
+          <div class="formule-prix">60<span class="cur">€</span><span class="per">à partir de</span></div>
+          <hr class="formule-sep" />
+          <ul class="f-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Lavage carrosserie</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage jantes</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage vitres</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aspiration habitacle</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dépoussiérage tableau de bord</li>
+          </ul>
+          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Essentielle+%E2%80%93+60%E2%82%AC" target="_blank" rel="noopener" class="btn btn-outline">Réserver</a>
         </article>
 
+        <!-- CONFORT -->
         <article class="formule-card reveal">
-          <span class="formule-badge">Prix sur demande</span>
-          <h3>Nettoyage extérieur complet</h3>
-          <p>Lavage carrosserie, jantes et vitres, séchage minutieux et finition brillante pour une auto impeccable.</p>
-          <p class="formule-prix"><!-- PRIX À AJOUTER --></p>
-          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Nettoyage+ext%C3%A9rieur+complet" target="_blank" rel="noopener" class="btn btn-primary">Réserver — Nettoyage extérieur complet</a>
+          <div class="formule-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.4L18 9l-4.1 1.6L12 15l-1.9-4.4L6 9l4.1-1.6z"/><path d="M18.5 14l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></svg>
+          </div>
+          <h3>Confort</h3>
+          <p class="f-sub">Le nettoyage complet</p>
+          <div class="formule-prix">90<span class="cur">€</span><span class="per">à partir de</span></div>
+          <hr class="formule-sep" />
+          <ul class="f-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Lavage extérieur complet</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Jantes et pneus</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Vitres intérieures et extérieures</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aspiration complète</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dépoussiérage plastiques</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage tapis</li>
+          </ul>
+          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Confort+%E2%80%93+90%E2%82%AC" target="_blank" rel="noopener" class="btn btn-outline">Réserver</a>
         </article>
 
-        <article class="formule-card reveal">
-          <span class="formule-badge">Prix sur demande</span>
-          <h3>Polissage / Lustrage</h3>
-          <p>Correction des micro-rayures et lustrage professionnel pour raviver l'éclat et la profondeur de la peinture.</p>
-          <p class="formule-prix"><!-- PRIX À AJOUTER --></p>
-          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Polissage+%2F+Lustrage" target="_blank" rel="noopener" class="btn btn-primary">Réserver — Polissage / Lustrage</a>
+        <!-- PREMIUM (mise en avant) -->
+        <article class="formule-card featured reveal">
+          <span class="formule-ribbon">⭐ La plus demandée</span>
+          <div class="formule-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4 4 5-7 5 7 4-4-1.8 12.5H4.8L3 7z"/><path d="M5 21h14"/></svg>
+          </div>
+          <h3>Premium</h3>
+          <p class="f-sub">Le detailing signature BRB</p>
+          <div class="formule-prix">120<span class="cur">€</span><span class="per">à partir de</span></div>
+          <hr class="formule-sep" />
+          <ul class="f-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Prélavage mousse</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Lavage carrosserie manuel</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage détaillé des jantes</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Brillant pneus</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Vitres complètes</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aspiration approfondie</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage des plastiques</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Shampoing tapis</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage du coffre</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Désodorisation habitacle</li>
+          </ul>
+          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Premium+%E2%80%93+120%E2%82%AC" target="_blank" rel="noopener" class="btn btn-primary">Réserver</a>
         </article>
+
+        <!-- PRESTIGE -->
+        <article class="formule-card reveal">
+          <div class="formule-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>Prestige</h3>
+          <p class="f-sub">L'excellence absolue</p>
+          <div class="formule-prix">180<span class="cur">€</span><span class="per">à partir de</span></div>
+          <hr class="formule-sep" />
+          <ul class="f-feats">
+            <li class="f-incl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Toutes les prestations Premium</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Shampoing sièges textiles</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Injection / extraction</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nettoyage approfondi des plastiques</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Protection carrosserie express</li>
+          </ul>
+          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2BDZ4akZT5J5aiCJ7WBLjsKVVGAzwiTl0ZCimJQZiZ4sl4JErxKwo75d-Pfnyw79f6ko9erNgo?hl=fr&gv=true&description=Formule+choisie+%3A+Prestige+%E2%80%93+180%E2%82%AC" target="_blank" rel="noopener" class="btn btn-outline">Réserver</a>
+        </article>
+
+      </div>
+
+      <!-- OPTIONS -->
+      <div class="options-wrap reveal">
+        <h3 class="options-title">Options <span>à la carte</span></h3>
+        <p class="section-sub">Personnalisez votre prestation avec nos options complémentaires.</p>
+        <div class="options-grid">
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span class="o-name">Shampoing sièges</span><span class="o-price">+30 €</span>
+          </div>
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span class="o-name">Traitement poils d'animaux</span><span class="o-price">+20 €</span>
+          </div>
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span class="o-name">Désinfection vapeur</span><span class="o-price">+20 €</span>
+          </div>
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span class="o-name">Rénovation phares</span><span class="o-price">+50 €</span>
+          </div>
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span class="o-name">Nettoyage compartiment moteur</span><span class="o-price">+30 €</span>
+          </div>
+          <div class="option-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+            <span class="o-name">Protection céramique</span><span class="o-price">dès 150 €</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
